@@ -7,7 +7,8 @@ Registrar, sem compartilhar arquivos protegidos:
 - **Title ID informado:** `465307E4`.
 - **Title Update informado:** nenhum (jogo sem TU; versão base).
 - **Media ID informado:** `458B3E06`.
-- região/edição e revisão do disco/GOD, se identificável.
+- **Região informada:** NTSC.
+- revisão do disco/GOD, se identificável.
 - configuração de rede do console.
 - se a cópia inicia offline normalmente.
 
@@ -69,4 +70,4 @@ Cada afirmação de compatibilidade deve incluir:
 
 ## Próximo dado necessário
 
-O alvo inicial registrado é **Title ID `465307E4`, sem Title Update**. Ainda precisamos identificar região/revisão e observar o tráfego real para confirmar a build e o protocolo. Não envie ISO, GOD, XEX, perfil, credenciais ou arquivos proprietários.
+O alvo inicial registrado é **Title ID `465307E4`, Media ID `458B3E06`, região NTSC e sem Title Update**. Ainda precisamos observar o tráfego real para confirmar a build e o protocolo. Não envie ISO, GOD, XEX, perfil, credenciais ou arquivos proprietários.
