@@ -24,6 +24,9 @@ class ProjectStructureTests(unittest.TestCase):
             "backend/include/identity/identity_registry.hpp",
             "backend/tests/identity_registry_test.cpp",
             "docs/architecture/identity-registry.md",
+            "backend/include/identity/sqlite_identity_store.hpp",
+            "backend/src/identity/sqlite_identity_store.cpp",
+            "backend/tests/sqlite_identity_store_test.cpp",
         ):
             with self.subTest(path=relative):
                 self.assertTrue((ROOT / relative).is_file(), relative)
