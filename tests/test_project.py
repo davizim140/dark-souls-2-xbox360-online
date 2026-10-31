@@ -11,6 +11,7 @@ class ProjectStructureTests(unittest.TestCase):
             "docs/research-plan.md",
             "docs/compatibility/ds2-breakin-visitor-manager-audit.md",
             "docs/compatibility/ds2-player-data-state-audit.md",
+            "docs/protocol/ds2-allstatus-protobuf-field-audit.md",
             "docs/compatibility/ds2-matchmaking-manager-audit.md",
             "docs/compatibility/ds2-ghosts-messages-bloodstains-audit.md",
             ".github/workflows/ci.yml",
@@ -33,6 +34,7 @@ class ProjectStructureTests(unittest.TestCase):
         paths = (
             "docs/compatibility/ds2-breakin-visitor-manager-audit.md",
             "docs/compatibility/ds2-player-data-state-audit.md",
+            "docs/protocol/ds2-allstatus-protobuf-field-audit.md",
             "docs/compatibility/ds2-matchmaking-manager-audit.md",
             "docs/compatibility/ds2-ghosts-messages-bloodstains-audit.md",
         )
