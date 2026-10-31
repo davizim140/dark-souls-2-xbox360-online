@@ -87,7 +87,7 @@ class ProjectStructureTests(unittest.TestCase):
         self.assertEqual(report.count("| `0X"), 82)
         self.assertIn("`0X0394`", report)
         self.assertIn("`0X03D3`", report)
-        self.assertIn("msg_type = `0x0320`", report)
+        self.assertIn("`msg_type = 0x0320`", report)
         self.assertIn("não comprova que o Xbox 360", report)
         self.assertIn("Nenhum XEX foi criado ou executado", report)
 
