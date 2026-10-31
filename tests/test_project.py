@@ -28,6 +28,10 @@ class ProjectStructureTests(unittest.TestCase):
             "backend/include/identity/sqlite_identity_store.hpp",
             "backend/src/identity/sqlite_identity_store.cpp",
             "backend/tests/sqlite_identity_store_test.cpp",
+            "tools/inspect_dsos_identity_db.py",
+            "tools/migrate_dsos_identity_copy.py",
+            "tests/test_dsos_db_inspector.py",
+            "tests/test_dsos_identity_migration.py",
         ):
             with self.subTest(path=relative):
                 self.assertTrue((ROOT / relative).is_file(), relative)
