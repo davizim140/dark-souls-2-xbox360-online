@@ -8,10 +8,23 @@ from __future__ import annotations
 
 import argparse
 import json
-import os
 import sqlite3
 import sys
 from pathlib import Path
+
+
+def _database_fingerprint(connection: sqlite3.Connection) -> dict:
+    tables = [row[0] for row in connection.execute(
+        "SELECT name FROM sqlite_master WHERE type='table' AND name NOT LIKE 'sqlite_%' ORDER BY name"
+    )]
+    schema = connection.execute(
+        "SELECT type, name, tbl_name, sql FROM sqlite_master WHERE name NOT LIKE 'sqlite_%' ORDER BY type, name"
+    ).fetchall()
+    counts = {}
+    for table in tables:
+        quoted = '"' + table.replace('"', '""') + '"'
+        counts[table] = connection.execute('SELECT COUNT(*) FROM ' + quoted).fetchone()[0]
+    return {"table_rows": counts, "schema": [tuple(row) for row in schema]}
 
 
 def migrate_copy(source_path: str, destination_path: str) -> dict:
@@ -44,6 +57,7 @@ def migrate_copy(source_path: str, destination_path: str) -> dict:
         rows = src.execute(
             f'SELECT {q_id}, {q_steam} FROM "Players" ORDER BY {q_id}'
         ).fetchall()
+        source_fingerprint = _database_fingerprint(src)
         seen = set()
         normalized = []
         for player_id, steam_id in rows:
@@ -59,6 +73,9 @@ def migrate_copy(source_path: str, destination_path: str) -> dict:
 
         dst = sqlite3.connect(str(destination))
         src.backup(dst)
+        copied_fingerprint = _database_fingerprint(dst)
+        if copied_fingerprint != source_fingerprint:
+            raise RuntimeError("SQLite backup differs from source schema or table row counts")
         dst.execute("PRAGMA foreign_keys=ON")
         dst.execute("BEGIN IMMEDIATE")
         dst.execute("""
@@ -101,6 +118,8 @@ def migrate_copy(source_path: str, destination_path: str) -> dict:
             "provider": "steam",
             "player_ids_preserved": True,
             "foreign_key_check": "passed",
+            "legacy_table_row_counts": source_fingerprint["table_rows"],
+            "legacy_schema_verified_before_extension": True,
             "note": "This is a copy-only legacy Steam mapping, not Xbox authentication or protocol support.",
         }
     except Exception:
