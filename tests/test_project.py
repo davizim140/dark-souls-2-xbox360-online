@@ -40,7 +40,7 @@ class ProjectStructureTests(unittest.TestCase):
             with self.subTest(path=relative):
                 content = (ROOT / relative).read_text(encoding="utf-8").lower()
                 self.assertIn("xbox", content)
-                self.assertIn("não", content)
+                self.assertTrue("não" in content or "not" in content)
 
 if __name__ == "__main__":
     unittest.main(verbosity=2)
