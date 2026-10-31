@@ -67,7 +67,7 @@ class DsosIdentityMigrationTests(unittest.TestCase):
             db.execute("SELECT player_id, provider, identity_value FROM external_identities ORDER BY player_id").fetchall(),
             [(17, "steam", b"steam-legacy-17"), (29, "steam", b"steam-legacy-29")],
         )
-        self.assertEqual(db.execute("SELECT Id, PlayerId, Data FROM Characters").fetchall(), [(101, 17, b"\\x00\\x11\\x22")])
+        self.assertEqual(db.execute("SELECT Id, PlayerId, Data FROM Characters").fetchall(), [(101, 17, bytes.fromhex("001122"))])
         self.assertEqual(db.execute("SELECT MessageId, PlayerId FROM BloodMessages").fetchall(), [(201, 17)])
         self.assertEqual(db.execute("SELECT PlayerSteamId FROM Bans").fetchall(), [("banned-not-player",)])
         self.assertEqual(db.execute("PRAGMA foreign_key_check").fetchall(), [])
