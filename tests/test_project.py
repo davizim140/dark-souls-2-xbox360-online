@@ -10,6 +10,7 @@ class ProjectStructureTests(unittest.TestCase):
             "docs/architecture.md",
             "docs/research-plan.md",
             "docs/compatibility/ds2-breakin-visitor-manager-audit.md",
+            "docs/compatibility/ds2-player-data-state-audit.md",
             "docs/compatibility/ds2-matchmaking-manager-audit.md",
             "docs/compatibility/ds2-ghosts-messages-bloodstains-audit.md",
             ".github/workflows/ci.yml",
@@ -31,6 +32,7 @@ class ProjectStructureTests(unittest.TestCase):
     def test_upstream_audits_preserve_xbox_compatibility_boundary(self):
         paths = (
             "docs/compatibility/ds2-breakin-visitor-manager-audit.md",
+            "docs/compatibility/ds2-player-data-state-audit.md",
             "docs/compatibility/ds2-matchmaking-manager-audit.md",
             "docs/compatibility/ds2-ghosts-messages-bloodstains-audit.md",
         )
