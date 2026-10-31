@@ -30,6 +30,7 @@ class ProjectStructureTests(unittest.TestCase):
             "docs/compatibility/dsos-ds2-pc-client-redirection-audit.md",
             "docs/compatibility/dsos-xboxone-stubs-not-xbox360-audit.md",
             "docs/protocol/dsos-login-auth-game-server-chain-audit.md",
+            "docs/protocol/ds2-reliable-udp-message-opcode-audit.md",
             "backend/include/identity/sqlite_identity_store.hpp",
             "backend/src/identity/sqlite_identity_store.cpp",
             "backend/tests/sqlite_identity_store_test.cpp",
@@ -78,6 +79,17 @@ class ProjectStructureTests(unittest.TestCase):
         self.assertIn("netconnectionudp", report)
         self.assertIn("não prova que o xbox 360", report)
         self.assertIn("nenhum xex criado ou executado", report)
+
+
+    def test_ds2_reliable_udp_opcode_audit_covers_active_map(self):
+        report = (ROOT / "docs/protocol/ds2-reliable-udp-message-opcode-audit.md").read_text(encoding="utf-8")
+        self.assertIn("82 registros ativos", report)
+        self.assertEqual(report.count("| `0X"), 82)
+        self.assertIn("`0X0394`", report)
+        self.assertIn("`0X03D3`", report)
+        self.assertIn("msg_type = `0x0320`", report)
+        self.assertIn("não comprova que o Xbox 360", report)
+        self.assertIn("Nenhum XEX foi criado ou executado", report)
 
     def test_xbox_connection_failure_does_not_claim_unknown_protocol_details(self):
         report = (ROOT / "docs/protocol/xbox360-connection-failure-analysis.md").read_text(encoding="utf-8").lower()
