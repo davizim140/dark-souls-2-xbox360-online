@@ -71,3 +71,31 @@ Useful upstream source references:
 - `Source/Server.DarkSouls2/Server/Streams/DS2_Frpg2ReliableUdpMessage.h`
 - `Source/Server.DarkSouls2/Server/Streams/DS2_Frpg2ReliableUdpMessageTypes.inc`
 - `Source/Server.DarkSouls2/Protobuf/DS2_Protobufs.h`
+
+
+## Boot/login handshake inspection
+
+The upstream `DS2_BootManager.cpp` provides a concrete first-session sequence:
+
+1. It waits for `RequestWaitForUserLogin`.
+2. The handler reads `steam_id()` from that request.
+3. The server resolves or creates a player record using that Steam ID.
+4. It responds with `RequestWaitForUserLoginResponse`, including the Steam ID and assigned player ID.
+5. It then sends `PlayerInfoUploadConfigPushMessage`, configuring player-status upload fields and intervals.
+6. A separate request, `RequestGetAnnounceMessageList`, returns announcement data.
+
+### Why this matters for Xbox 360
+
+This is a major compatibility checkpoint: the reference server's login handler explicitly expects a Steam ID and uses it as the player identity key. The Xbox 360 build may instead rely on Xbox Live/XUID or another platform identity. That is not yet proven for this title/build, but it means we cannot assume the existing DSOS login flow will accept an Xbox 360 client unchanged.
+
+The Xbox-side first connection attempt must be observed before designing an authentication adapter. Do not fabricate a Steam ID, bypass authentication, or redirect the console to this server as a test.
+
+### Protocol checkpoints for the Xbox comparison
+
+- Does the console attempt UDP during the post-calibration phase?
+- Does the first application-level request resemble `RequestWaitForUserLogin`?
+- What identity field, if any, is sent by the Xbox client?
+- Does the client then request announcements?
+- Does the server-side message framing match the upstream FRPG2 reliable-UDP implementation?
+
+No Xbox packet capture has been supplied, so all Xbox-side answers remain unknown.
