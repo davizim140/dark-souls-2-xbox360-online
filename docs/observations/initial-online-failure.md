@@ -9,6 +9,7 @@
 - Title Update: none (base version, as reported)
 - Test: attempt to enter the game's online mode from the main menu
 - Observed result: "Falha ao se conectar ao servidor do jogo Dark Souls 2."
+- Timing: appears after the game completes its calibrations and waits a few seconds (user observation, category B).
 
 ## What this establishes
 
@@ -26,4 +27,4 @@ It also does not prove that any specific server hostname, IP address, port, or p
 
 ## Next evidence needed
 
-If the game displays a more detailed error code or a retry/details screen, record its exact text. Otherwise, repeat the same online attempt once and note whether the message appears immediately or after a loading/connection delay. Do not change router settings, game files, console storage, profiles, or network configuration for this observation.
+The user reports that the failure appears a few seconds after the in-game calibrations. No detailed error code has been reported. Do not change router settings, game files, console storage, profiles, or network configuration for this observation.
