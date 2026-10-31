@@ -61,6 +61,11 @@ class DsosIdentityMigrationTests(unittest.TestCase):
         self.assertEqual(report["players_preserved"], 2)
         self.assertEqual(report["identity_rows_added"], 2)
         self.assertTrue(report["player_ids_preserved"])
+        self.assertTrue(report["legacy_schema_verified_before_extension"])
+        self.assertEqual(report["legacy_table_row_counts"]["Players"], 2)
+        self.assertEqual(report["legacy_table_row_counts"]["Characters"], 1)
+        self.assertEqual(report["legacy_table_row_counts"]["BloodMessages"], 1)
+        self.assertEqual(report["legacy_table_row_counts"]["Bans"], 1)
         db = sqlite3.connect(self.destination)
         self.assertEqual(db.execute("SELECT PlayerId FROM Players ORDER BY PlayerId").fetchall(), [(17,), (29,)])
         self.assertEqual(
