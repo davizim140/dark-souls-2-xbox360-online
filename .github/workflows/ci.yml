@@ -24,3 +24,10 @@ jobs:
 
       - name: Run repository checks
         run: python -m unittest discover -s tests -v
+
+      - name: Compile neutral identity primitive
+        run: |
+          g++ -std=c++17 -Wall -Wextra -Werror -pedantic \
+            -Ibackend/include backend/tests/external_identity_test.cpp \
+            -o /tmp/external_identity_test
+          /tmp/external_identity_test
