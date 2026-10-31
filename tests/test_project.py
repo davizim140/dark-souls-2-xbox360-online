@@ -29,6 +29,7 @@ class ProjectStructureTests(unittest.TestCase):
             "docs/compatibility/ds2-copy-migration-contract.md",
             "docs/compatibility/dsos-ds2-pc-client-redirection-audit.md",
             "docs/compatibility/dsos-xboxone-stubs-not-xbox360-audit.md",
+            "docs/protocol/dsos-login-auth-game-server-chain-audit.md",
             "backend/include/identity/sqlite_identity_store.hpp",
             "backend/src/identity/sqlite_identity_store.cpp",
             "backend/tests/sqlite_identity_store_test.cpp",
@@ -67,6 +68,16 @@ class ProjectStructureTests(unittest.TestCase):
         self.assertIn("steamticket", report)
         self.assertIn("não é evidência de xbox 360", report)
         self.assertIn("não cria xex", report)
+
+    def test_dsos_server_chain_audit_marks_pc_assumptions(self):
+        report = (ROOT / "docs/protocol/dsos-login-auth-game-server-chain-audit.md").read_text(encoding="utf-8").lower()
+        self.assertIn("requestqueryloginserverinfo", report)
+        self.assertIn("steamticket", report)
+        self.assertIn("beginauthsession", report)
+        self.assertIn("uint64_t authtoken", report)
+        self.assertIn("netconnectionudp", report)
+        self.assertIn("não prova que o xbox 360", report)
+        self.assertIn("nenhum xex criado ou executado", report)
 
     def test_xbox_connection_failure_does_not_claim_unknown_protocol_details(self):
         report = (ROOT / "docs/protocol/xbox360-connection-failure-analysis.md").read_text(encoding="utf-8").lower()
