@@ -27,6 +27,7 @@ class ProjectStructureTests(unittest.TestCase):
             "docs/architecture/identity-registry.md",
             "docs/compatibility/ds2-identity-migration-audit.md",
             "docs/compatibility/ds2-copy-migration-contract.md",
+            "docs/compatibility/dsos-ds2-pc-client-redirection-audit.md",
             "backend/include/identity/sqlite_identity_store.hpp",
             "backend/src/identity/sqlite_identity_store.cpp",
             "backend/tests/sqlite_identity_store_test.cpp",
@@ -48,6 +49,14 @@ class ProjectStructureTests(unittest.TestCase):
         plan = (ROOT / "docs/research-plan.md").read_text(encoding="utf-8")
         self.assertIn("Title ID", plan)
         self.assertIn("evidências", plan.lower())
+
+    def test_dsos_pc_redirect_is_not_misrepresented_as_xbox_support(self):
+        report = (ROOT / "docs/compatibility/dsos-ds2-pc-client-redirection-audit.md").read_text(encoding="utf-8").lower()
+        self.assertIn("50031", report)
+        self.assertIn("winsock", report)
+        self.assertIn("injector.dll", report)
+        self.assertIn("steam", report)
+        self.assertIn("protocolo xbox permanece não identificado", report)
 
     def test_xbox_connection_failure_does_not_claim_unknown_protocol_details(self):
         report = (ROOT / "docs/protocol/xbox360-connection-failure-analysis.md").read_text(encoding="utf-8").lower()
