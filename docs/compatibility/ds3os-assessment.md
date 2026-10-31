@@ -45,3 +45,29 @@ This timing does not identify the destination server or prove which stage failed
 ## Next technical task
 
 Map the DS2-specific protocol surface in the upstream source (message definitions, server handlers, authentication/session entry points) and create a comparison checklist for the Xbox 360 client. Do not claim parity until Xbox-side evidence exists.
+
+
+## Source-level protocol map (upstream DS2 implementation)
+
+Inspection of the upstream DS2-specific source identifies these concrete components:
+
+- `DS2_Game.cpp` maps typed protobuf request objects to `DS2_Frpg2ReliableUdpMessageType` values and maps incoming message types back to protobuf request/response classes.
+- The transport wrapper is named `DS2_Frpg2ReliableUdpMessage`; the message-type mapping is listed in `DS2_Frpg2ReliableUdpMessageTypes.inc`.
+- The protobuf header imports `DS2_Frpg2PlayerData.pb.h` and `DS2_Frpg2RequestMessage.pb.h`.
+- The game registers separate managers for boot, player data, ghosts, blood messages, bloodstains, break-ins, logging, misc, visitors, rankings, Mirror Knight, summon signs and quick matches.
+- The server exposes live counters for blood messages, bloodstains, undead matches, summon signs and ghosts.
+
+This establishes that the upstream DS2 implementation uses a reliable-UDP message layer with protobuf message classes and feature-specific managers. It does **not** establish that the Xbox 360 client uses the same framing, opcodes, protobuf schema, authentication or endpoints.
+
+### Best comparison targets
+
+1. Identify whether Xbox 360 traffic uses UDP during the post-calibration connection attempt.
+2. If UDP is observed, compare packet timing and message framing only after capturing sanitized evidence.
+3. Compare the Xbox client's first request/response sequence against the upstream DS2 boot/session handlers.
+4. Treat authentication separately; the upstream PC workflow depends on Steam tickets and a PC injector.
+
+Useful upstream source references:
+- `Source/Server.DarkSouls2/Server/DS2_Game.cpp`
+- `Source/Server.DarkSouls2/Server/Streams/DS2_Frpg2ReliableUdpMessage.h`
+- `Source/Server.DarkSouls2/Server/Streams/DS2_Frpg2ReliableUdpMessageTypes.inc`
+- `Source/Server.DarkSouls2/Protobuf/DS2_Protobufs.h`
