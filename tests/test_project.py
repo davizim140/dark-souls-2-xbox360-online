@@ -25,6 +25,7 @@ class ProjectStructureTests(unittest.TestCase):
             "backend/tests/identity_registry_test.cpp",
             "docs/architecture/identity-registry.md",
             "docs/compatibility/ds2-identity-migration-audit.md",
+            "docs/compatibility/ds2-copy-migration-contract.md",
             "backend/include/identity/sqlite_identity_store.hpp",
             "backend/src/identity/sqlite_identity_store.cpp",
             "backend/tests/sqlite_identity_store_test.cpp",
