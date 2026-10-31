@@ -4,6 +4,8 @@
 #include <cstdio>
 #include <filesystem>
 #include <string>
+#include <thread>
+#include <vector>
 
 using ds2online::identity::ExternalIdentity;
 using ds2online::identity::SqliteIdentityStore;
@@ -11,6 +13,32 @@ using ds2online::identity::SqliteIdentityStore;
 int main() {
     const auto database_path =
         (std::filesystem::temp_directory_path() / "ds2online_identity_persistence_test.sqlite").string();
+
+    // Two independent SQLite connections must resolve a concurrent identity
+    // to one stable player ID, not create duplicate rows.
+    const ExternalIdentity concurrent_identity{"test-provider", {0xAA, 0xBB, 0xCC}};
+    {
+        SqliteIdentityStore first_connection(database_path);
+        SqliteIdentityStore second_connection(database_path);
+        std::vector<SqliteIdentityStore::PlayerId> observed(16, 0);
+        std::vector<std::thread> workers;
+        for (std::size_t i = 0; i < observed.size(); ++i) {
+            workers.emplace_back([&, i]() {
+                auto& connection = (i % 2 == 0) ? first_connection : second_connection;
+                for (int attempt = 0; attempt < 20; ++attempt) {
+                    const auto id = connection.ResolveOrCreate(concurrent_identity);
+                    assert(id.has_value());
+                    observed[i] = *id;
+                }
+            });
+        }
+        for (auto& worker : workers) worker.join();
+        for (const auto id : observed) {
+            assert(id == observed.front());
+        }
+        assert(first_connection.Find(concurrent_identity) == observed.front());
+    }
+
     std::remove(database_path.c_str());
     std::remove((database_path + "-wal").c_str());
     std::remove((database_path + "-shm").c_str());
