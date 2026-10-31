@@ -18,7 +18,7 @@ Se o envio do push falhar, o handler retorna erro. O código mostra a ordem de e
 
 ## 2. Máscara estática configurada pelo DSOS
 
-O código declara 101 valores na máscara:
+O código declara 93 valores na máscara:
 
 ```text
 0–4
