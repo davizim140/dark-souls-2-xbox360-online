@@ -21,6 +21,9 @@ class ProjectStructureTests(unittest.TestCase):
             ".github/workflows/ci.yml",
             "backend/include/identity/external_identity.hpp",
             "backend/tests/external_identity_test.cpp",
+            "backend/include/identity/identity_registry.hpp",
+            "backend/tests/identity_registry_test.cpp",
+            "docs/architecture/identity-registry.md",
         ):
             with self.subTest(path=relative):
                 self.assertTrue((ROOT / relative).is_file(), relative)
