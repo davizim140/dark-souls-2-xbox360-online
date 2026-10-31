@@ -64,7 +64,7 @@ class ProjectStructureTests(unittest.TestCase):
         self.assertIn("requestqueryloginserverinfoforxboxone", report)
         self.assertIn("getservicestatusforxboxone", report)
         self.assertIn("loginclient.cpp", report)
-        self.assertIn("steam ticket", report)
+        self.assertIn("steamticket", report)
         self.assertIn("não é evidência de xbox 360", report)
         self.assertIn("não cria xex", report)
 
