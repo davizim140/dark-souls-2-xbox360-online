@@ -1,0 +1,39 @@
+name: Build DSOS upstream baseline
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - ".github/workflows/dsos-upstream-build.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  build-ds2-server-baseline:
+    name: Build pinned DSOS baseline (Linux)
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Checkout pinned DSOS source
+        uses: actions/checkout@v4
+        with:
+          repository: TLeonardUK/ds3os
+          ref: 56406879a31505a71bea8c6290da370067f43659
+          submodules: recursive
+          path: ds3os
+
+      - name: Generate Linux build
+        working-directory: ds3os/Tools
+        run: ./generate_make_release.sh
+
+      - name: Compile upstream server baseline
+        working-directory: ds3os/intermediate/make
+        run: make -j2
+
+      - name: Upload Linux build artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: dsos-linux-upstream-baseline
+          path: ds3os/bin/**
+          if-no-files-found: warn
+          retention-days: 7
