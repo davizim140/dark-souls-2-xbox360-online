@@ -9,6 +9,7 @@ class ProjectStructureTests(unittest.TestCase):
             "README.md",
             "docs/architecture.md",
             "docs/research-plan.md",
+            "docs/protocol/xbox360-connection-failure-analysis.md",
             "docs/compatibility/ds2-breakin-visitor-manager-audit.md",
             "docs/compatibility/ds2-player-data-state-audit.md",
             "docs/compatibility/ds2-character-persistence-audit.md",
@@ -47,6 +48,14 @@ class ProjectStructureTests(unittest.TestCase):
         plan = (ROOT / "docs/research-plan.md").read_text(encoding="utf-8")
         self.assertIn("Title ID", plan)
         self.assertIn("evidências", plan.lower())
+
+    def test_xbox_connection_failure_does_not_claim_unknown_protocol_details(self):
+        report = (ROOT / "docs/protocol/xbox360-connection-failure-analysis.md").read_text(encoding="utf-8").lower()
+        self.assertIn("protocolo xbox 360 não identificado", report)
+        self.assertIn("não identifica qual etapa falhou", report)
+        self.assertIn("hostname", report)
+        self.assertIn("desconhecida", report)
+        self.assertIn("não implementar ainda", report)
 
     def test_upstream_audits_preserve_xbox_compatibility_boundary(self):
         paths = (
