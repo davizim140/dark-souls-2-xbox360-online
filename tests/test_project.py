@@ -9,6 +9,9 @@ class ProjectStructureTests(unittest.TestCase):
             "README.md",
             "docs/architecture.md",
             "docs/research-plan.md",
+            "docs/compatibility/ds2-breakin-visitor-manager-audit.md",
+            "docs/compatibility/ds2-matchmaking-manager-audit.md",
+            "docs/compatibility/ds2-ghosts-messages-bloodstains-audit.md",
             ".github/workflows/ci.yml",
         ):
             with self.subTest(path=relative):
@@ -24,6 +27,18 @@ class ProjectStructureTests(unittest.TestCase):
         plan = (ROOT / "docs/research-plan.md").read_text(encoding="utf-8")
         self.assertIn("Title ID", plan)
         self.assertIn("evidências", plan.lower())
+
+    def test_upstream_audits_preserve_xbox_compatibility_boundary(self):
+        paths = (
+            "docs/compatibility/ds2-breakin-visitor-manager-audit.md",
+            "docs/compatibility/ds2-matchmaking-manager-audit.md",
+            "docs/compatibility/ds2-ghosts-messages-bloodstains-audit.md",
+        )
+        for relative in paths:
+            with self.subTest(path=relative):
+                content = (ROOT / relative).read_text(encoding="utf-8").lower()
+                self.assertIn("xbox", content)
+                self.assertIn("não", content)
 
 if __name__ == "__main__":
     unittest.main(verbosity=2)
