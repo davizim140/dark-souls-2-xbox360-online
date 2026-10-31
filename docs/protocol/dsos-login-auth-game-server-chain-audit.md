@@ -5,7 +5,7 @@
 Upstream: `TLeonardUK/ds3os`  
 Commit: `56406879a31505a71bea8c6290da370067f43659`
 
-Esta auditoria descreve o que o servidor DSOS implementa. Ela não descreve um cliente Xbox 360 e não prova que o jogo de console use o mesmo protocolo.
+Esta auditoria descreve o que o servidor DSOS implementa. Ela não descreve um cliente Xbox 360. Em particular, a cadeia PC/Steam documentada aqui não prova que o Xbox 360 use o mesmo protocolo, identidade, autenticação ou transporte.
 
 Fontes upstream:
 
