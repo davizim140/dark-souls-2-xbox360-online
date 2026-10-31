@@ -19,6 +19,8 @@ class ProjectStructureTests(unittest.TestCase):
             "docs/compatibility/ds2-matchmaking-manager-audit.md",
             "docs/compatibility/ds2-ghosts-messages-bloodstains-audit.md",
             ".github/workflows/ci.yml",
+            "backend/include/identity/external_identity.hpp",
+            "backend/tests/external_identity_test.cpp",
         ):
             with self.subTest(path=relative):
                 self.assertTrue((ROOT / relative).is_file(), relative)
