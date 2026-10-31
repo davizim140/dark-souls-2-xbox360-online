@@ -12,7 +12,7 @@ permissions:
 jobs:
   build-ds2-server-baseline:
     name: Build pinned DSOS baseline (Linux)
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     steps:
       - name: Checkout pinned DSOS source
         uses: actions/checkout@v4
