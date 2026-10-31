@@ -22,14 +22,26 @@ jobs:
         with:
           python-version: "3.12"
 
+      - name: Install SQLite development library
+        run: sudo apt-get update && sudo apt-get install -y libsqlite3-dev
+
       - name: Run repository checks
         run: python -m unittest discover -s tests -v
 
       - name: Compile and run identity tests
         run: |
-          for test in external_identity_test identity_registry_test; do
-            g++ -std=c++17 -Wall -Wextra -Werror -pedantic \
-              -Ibackend/include "backend/tests/${test}.cpp" \
-              -o "/tmp/${test}"
-            "/tmp/${test}"
-          done
+          g++ -std=c++17 -Wall -Wextra -Werror -pedantic \
+            -Ibackend/include backend/tests/external_identity_test.cpp \
+            -o /tmp/external_identity_test
+          /tmp/external_identity_test
+
+          g++ -std=c++17 -Wall -Wextra -Werror -pedantic \
+            -Ibackend/include backend/tests/identity_registry_test.cpp \
+            -o /tmp/identity_registry_test
+          /tmp/identity_registry_test
+
+          g++ -std=c++17 -Wall -Wextra -Werror -pedantic \
+            -Ibackend/include backend/src/identity/sqlite_identity_store.cpp \
+            backend/tests/sqlite_identity_store_test.cpp -lsqlite3 \
+            -o /tmp/sqlite_identity_store_test
+          /tmp/sqlite_identity_store_test
