@@ -60,31 +60,37 @@ SqliteIdentityStore::SqliteIdentityStore(const std::string& database_path) {
     const int result = sqlite3_open_v2(database_path.c_str(), &database_, flags, nullptr);
     if (result != SQLITE_OK) {
         const std::string detail = database_ ? sqlite3_errmsg(database_) : "unable to allocate SQLite handle";
-        if (database_) sqlite3_close(database_);
+        if (database_) sqlite3_close_v2(database_);
         database_ = nullptr;
         throw std::runtime_error("open identity database: " + detail);
     }
 
-    sqlite3_busy_timeout(database_, 5000);
-    CheckSqlite(sqlite3_exec(database_, "PRAGMA journal_mode=WAL;", nullptr, nullptr, nullptr),
-                database_, "enable SQLite WAL");
-    CheckSqlite(sqlite3_exec(database_, "PRAGMA synchronous=FULL;", nullptr, nullptr, nullptr),
-                database_, "set SQLite durability");
+    try {
+        CheckSqlite(sqlite3_busy_timeout(database_, 5000), database_, "set SQLite busy timeout");
+        CheckSqlite(sqlite3_exec(database_, "PRAGMA journal_mode=WAL;", nullptr, nullptr, nullptr),
+                    database_, "enable SQLite WAL");
+        CheckSqlite(sqlite3_exec(database_, "PRAGMA synchronous=FULL;", nullptr, nullptr, nullptr),
+                    database_, "set SQLite durability");
 
-    const char* schema =
-        "CREATE TABLE IF NOT EXISTS external_identities ("
-        "player_id INTEGER PRIMARY KEY AUTOINCREMENT,"
-        "provider TEXT NOT NULL,"
-        "identity_value BLOB NOT NULL,"
-        "created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,"
-        "UNIQUE(provider, identity_value)"
-        ");";
-    CheckSqlite(sqlite3_exec(database_, schema, nullptr, nullptr, nullptr),
-                database_, "create identity schema");
+        const char* schema =
+            "CREATE TABLE IF NOT EXISTS external_identities ("
+            "player_id INTEGER PRIMARY KEY AUTOINCREMENT,"
+            "provider TEXT NOT NULL,"
+            "identity_value BLOB NOT NULL,"
+            "created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,"
+            "UNIQUE(provider, identity_value)"
+            ");";
+        CheckSqlite(sqlite3_exec(database_, schema, nullptr, nullptr, nullptr),
+                    database_, "create identity schema");
+    } catch (...) {
+        sqlite3_close_v2(database_);
+        database_ = nullptr;
+        throw;
+    }
 }
 
 SqliteIdentityStore::~SqliteIdentityStore() {
-    if (database_) sqlite3_close(database_);
+    if (database_) sqlite3_close_v2(database_);
 }
 
 std::optional<SqliteIdentityStore::PlayerId>
