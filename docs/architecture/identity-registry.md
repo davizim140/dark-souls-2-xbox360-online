@@ -1,29 +1,29 @@
 # Registro de identidade externa — contrato inicial
 
-## O que foi adicionado
+## Componentes
 
-O backend possui agora ExternalIdentity, um identificador opaco composto por
-um namespace de provedor e bytes. IdentityRegistry associa essa identidade a
-um PlayerId interno numérico, sem usar diretamente o identificador externo
-como chave dos recursos de jogo.
+- `ExternalIdentity`: identificador opaco composto por namespace do provedor e bytes.
+- `IdentityRegistry`: associação em memória, útil para testes e não persistente.
+- `SqliteIdentityStore`: associação persistente entre identidade externa e `PlayerId` interno.
 
-## Comportamento testado
+## Persistência SQLite
 
-- A mesma identidade recebe o mesmo PlayerId durante a vida do processo.
-- Identidades diferentes recebem IDs internos diferentes.
-- O namespace do provedor faz parte da identidade.
-- Identificadores inválidos são rejeitados.
-- O contador não pode voltar a zero nem reutilizar IDs em caso de esgotamento.
-- As operações de consulta e criação são protegidas por mutex.
+A tabela `external_identities` usa:
+
+- `player_id`: chave interna inteira, autoincremental.
+- `provider`: namespace textual validado.
+- `identity_value`: bytes opacos armazenados como BLOB.
+- `created_at`: timestamp gerado pelo SQLite.
+- Restrição única em `(provider, identity_value)` para impedir duplicação da mesma identidade.
+
+A criação usa `INSERT OR IGNORE` seguido de consulta pela chave única. Assim, chamadas repetidas recuperam o mesmo ID e identidades em namespaces diferentes permanecem distintas. WAL, sincronização FULL e timeout de espera são configurados na conexão.
+
+## Testes automatizados
+
+O teste SQLite cria uma base temporária, registra duas identidades, fecha a conexão e abre uma nova instância. Depois verifica que os mesmos IDs são recuperados após a reabertura.
 
 ## Limites importantes
 
-Este registro é somente em memória. Os IDs são perdidos ao reiniciar o
-processo. Ainda não existe banco de dados, migração de registros DSOS, vínculo
-com contas, autenticação, política de banimento ou prova de identidade Xbox.
-Não use o namespace xuid nem outro namespace de plataforma até existir
-evidência verificável do formato e da origem do identificador no cliente Xbox.
+Esta implementação ainda não está integrada ao banco de dados DSOS. É uma base isolada, com um banco SQLite próprio. Não migra contas ou personagens existentes, não autentica o titular e não comprova que o Xbox usa XUID. Não associe uma identidade real de console até existir evidência verificável do protocolo e da origem do identificador.
 
-A implementação não está integrada ao DSOS upstream e não altera protobufs,
-login, rede, jogo ou arquivos do console. É uma fundação isolada para testar a
-separação entre identidade externa e chave interna antes de desenhar persistência.
+O código não altera protobufs, login, rede, jogo ou arquivos do console. A persistência aqui é um passo de arquitetura testado, não uma implementação de servidor Xbox funcional.
