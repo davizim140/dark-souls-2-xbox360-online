@@ -25,9 +25,11 @@ jobs:
       - name: Run repository checks
         run: python -m unittest discover -s tests -v
 
-      - name: Compile neutral identity primitive
+      - name: Compile and run identity tests
         run: |
-          g++ -std=c++17 -Wall -Wextra -Werror -pedantic \
-            -Ibackend/include backend/tests/external_identity_test.cpp \
-            -o /tmp/external_identity_test
-          /tmp/external_identity_test
+          for test in external_identity_test identity_registry_test; do
+            g++ -std=c++17 -Wall -Wextra -Werror -pedantic \
+              -Ibackend/include "backend/tests/${test}.cpp" \
+              -o "/tmp/${test}"
+            "/tmp/${test}"
+          done
