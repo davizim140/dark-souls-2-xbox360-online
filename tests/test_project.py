@@ -31,6 +31,7 @@ class ProjectStructureTests(unittest.TestCase):
             "docs/compatibility/dsos-xboxone-stubs-not-xbox360-audit.md",
             "docs/protocol/dsos-login-auth-game-server-chain-audit.md",
             "docs/protocol/ds2-reliable-udp-message-opcode-audit.md",
+            "docs/compatibility/ds2-message-handler-coverage-audit.md",
             "backend/include/identity/sqlite_identity_store.hpp",
             "backend/src/identity/sqlite_identity_store.cpp",
             "backend/tests/sqlite_identity_store_test.cpp",
@@ -89,6 +90,18 @@ class ProjectStructureTests(unittest.TestCase):
         self.assertIn("`0X03D3`", report)
         self.assertIn("`msg_type = 0x0320`", report)
         self.assertIn("não comprova que o Xbox 360", report)
+        self.assertIn("Nenhum XEX foi criado ou executado", report)
+
+
+    def test_ds2_message_handler_coverage_audit_is_explicit(self):
+        report = (ROOT / "docs/compatibility/ds2-message-handler-coverage-audit.md").read_text(encoding="utf-8")
+        self.assertIn("82", report)
+        self.assertIn("19", report)
+        self.assertIn("63", report)
+        self.assertIn("62", report)
+        self.assertIn("`RequestNotifyRingBell`", report)
+        self.assertIn("`0x03EE`", report)
+        self.assertIn("não identificados", report)
         self.assertIn("Nenhum XEX foi criado ou executado", report)
 
     def test_xbox_connection_failure_does_not_claim_unknown_protocol_details(self):
