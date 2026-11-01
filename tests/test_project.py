@@ -35,6 +35,7 @@ class ProjectStructureTests(unittest.TestCase):
             "docs/compatibility/ds2-handler-gaps-and-uncertainties-audit.md",
             "docs/compatibility/ds2-push-emission-coverage-audit.md",
             "docs/compatibility/ds2-xbox360-scholar-recomp-reference-audit.md",
+            "docs/compatibility/ds2-xam-session-live-party-voice-shim-audit.md",
             "docs/compatibility/ds2-request-send-message-to-players-security-audit.md",
             "backend/include/identity/sqlite_identity_store.hpp",
             "backend/src/identity/sqlite_identity_store.cpp",
@@ -174,6 +175,23 @@ class ProjectStructureTests(unittest.TestCase):
             with self.subTest(evidence=evidence):
                 self.assertIn(evidence, report)
 
+
+
+    def test_xam_session_live_party_voice_shim_audit_is_scoped(self):
+        report = (ROOT / "docs/compatibility/ds2-xam-session-live-party-voice-shim-audit.md").read_text(encoding="utf-8")
+        for evidence in (
+            "`XamSessionCreateHandle`",
+            "`XamSessionRefObjByHandle`",
+            "`XamPartyJoin`",
+            "`X_ERROR_FUNCTION_FAILED`",
+            "`XONLINE_NAT_OPEN`",
+            "`ERROR_CONNECTION_INVALID`",
+            "`XamVoiceCreate`",
+            "não prova que o jogo importe",
+            "Nenhum XEX foi criado ou executado",
+        ):
+            with self.subTest(evidence=evidence):
+                self.assertIn(evidence, report)
 
     def test_scholar_xbox360_recompiler_reference_is_scoped_and_honest(self):
         report = (ROOT / "docs/compatibility/ds2-xbox360-scholar-recomp-reference-audit.md").read_text(encoding="utf-8")
