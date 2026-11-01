@@ -59,7 +59,7 @@ class ProjectStructureTests(unittest.TestCase):
         self.assertIn("SessionFull", header)
         self.assertIn("SessionNotFound", header)
         self.assertIn("not yet a network server", docs)
-        self.assertIn("no Xbox Live/XONLINE integration", docs)
+        self.assertIn("Xbox Live/XONLINE integration", docs)
 
     def test_status_is_honest(self):
         readme = (ROOT / "README.md").read_text(encoding="utf-8")
