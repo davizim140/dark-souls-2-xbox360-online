@@ -58,7 +58,7 @@ class ProjectStructureTests(unittest.TestCase):
         self.assertIn("SessionRegistry", header)
         self.assertIn("SessionFull", header)
         self.assertIn("SessionNotFound", header)
-        self.assertIn("not a network server", docs)
+        self.assertIn("not yet a network server", docs)
         self.assertIn("no Xbox Live/XONLINE integration", docs)
 
     def test_status_is_honest(self):
