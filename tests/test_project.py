@@ -32,6 +32,7 @@ class ProjectStructureTests(unittest.TestCase):
             "docs/protocol/dsos-login-auth-game-server-chain-audit.md",
             "docs/protocol/ds2-reliable-udp-message-opcode-audit.md",
             "docs/compatibility/ds2-message-handler-coverage-audit.md",
+            "docs/compatibility/ds2-handler-gaps-and-uncertainties-audit.md",
             "backend/include/identity/sqlite_identity_store.hpp",
             "backend/src/identity/sqlite_identity_store.cpp",
             "backend/tests/sqlite_identity_store_test.cpp",
@@ -103,6 +104,21 @@ class ProjectStructureTests(unittest.TestCase):
         self.assertIn("`0x03EE`", report)
         self.assertIn("não identificados", report)
         self.assertIn("Nenhum XEX foi criado ou executado", report)
+
+
+    def test_ds2_handler_gaps_audit_distinguishes_unknowns_from_stubs(self):
+        report = (ROOT / "docs/compatibility/ds2-handler-gaps-and-uncertainties-audit.md").read_text(encoding="utf-8")
+        for evidence in (
+            "`max_type_1`",
+            "`RequestUpdateQuickMatch`",
+            "`RequestRejectSign`",
+            "`RequestRejectMirrorKnightSign`",
+            "resposta protobuf vazia",
+            "não provam",
+            "Nenhum XEX foi criado ou executado",
+        ):
+            with self.subTest(evidence=evidence):
+                self.assertIn(evidence, report)
 
     def test_xbox_connection_failure_does_not_claim_unknown_protocol_details(self):
         report = (ROOT / "docs/protocol/xbox360-connection-failure-analysis.md").read_text(encoding="utf-8").lower()
