@@ -128,7 +128,11 @@ class ProjectStructureTests(unittest.TestCase):
         self.assertIn("17", report)
         self.assertIn("`PushRequestAllowQuickMatch`", report)
         self.assertIn("`PushRequestRemoveQuickMatch`", report)
-        self.assertIn("Sem emissão encontrada", report)
+        self.assertIn("Sem emissão direta encontrada", report)
+        self.assertIn("Handle_RequestSendMessageToPlayers", report)
+        self.assertIn("SendRawProtobuf", report)
+        self.assertIn("retransmissão de push enviado pelo cliente", report)
+        self.assertIn("17 pushes com emissão direta encontrada; 2 sem emissão direta encontrada", report)
         self.assertIn("não confirma que o Xbox 360", report)
         self.assertIn("Nenhum XEX foi criado ou executado", report)
 
