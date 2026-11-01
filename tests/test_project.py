@@ -34,6 +34,7 @@ class ProjectStructureTests(unittest.TestCase):
             "docs/compatibility/ds2-message-handler-coverage-audit.md",
             "docs/compatibility/ds2-handler-gaps-and-uncertainties-audit.md",
             "docs/compatibility/ds2-push-emission-coverage-audit.md",
+            "docs/compatibility/ds2-request-send-message-to-players-security-audit.md",
             "backend/include/identity/sqlite_identity_store.hpp",
             "backend/src/identity/sqlite_identity_store.cpp",
             "backend/tests/sqlite_identity_store_test.cpp",
@@ -135,6 +136,24 @@ class ProjectStructureTests(unittest.TestCase):
         self.assertIn("17 pushes com emissão direta encontrada; 2 sem emissão direta encontrada", report)
         self.assertIn("não confirma que o Xbox 360", report)
         self.assertIn("Nenhum XEX foi criado ou executado", report)
+
+
+    def test_ds2_client_message_relay_security_audit_records_validation_limits(self):
+        report = (ROOT / "docs/compatibility/ds2-request-send-message-to-players-security-audit.md").read_text(encoding="utf-8")
+        for evidence in (
+            "`SEND_MESSAGE_TO_PLAYERS_SANITY_CHECKS`",
+            "`NRSSR_SANITY_CHECKS`",
+            "6 entradas",
+            "`ValidateEntryList`",
+            "retorna imediatamente `Valid`",
+            "`PushRequestAllowQuickMatch`",
+            "`SendRawProtobuf`",
+            "não foi encontrada uma verificação explícita",
+            "protocolo Xbox 360 permanece não identificado",
+            "Nenhum XEX foi criado ou executado",
+        ):
+            with self.subTest(evidence=evidence):
+                self.assertIn(evidence, report)
 
     def test_xbox_connection_failure_does_not_claim_unknown_protocol_details(self):
         report = (ROOT / "docs/protocol/xbox360-connection-failure-analysis.md").read_text(encoding="utf-8").lower()
