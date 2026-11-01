@@ -115,7 +115,7 @@ class ProjectStructureTests(unittest.TestCase):
             "`Handle_RequestRejectSign`",
             "`Handle_RequestRejectMirrorKnightSign`",
             "resposta protobuf vazia",
-            "não provam",
+            "Não provam",
             "Nenhum XEX foi criado ou executado",
         ):
             with self.subTest(evidence=evidence):
