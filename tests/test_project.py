@@ -34,6 +34,7 @@ class ProjectStructureTests(unittest.TestCase):
             "docs/compatibility/ds2-message-handler-coverage-audit.md",
             "docs/compatibility/ds2-handler-gaps-and-uncertainties-audit.md",
             "docs/compatibility/ds2-push-emission-coverage-audit.md",
+            "docs/compatibility/ds2-xbox360-scholar-recomp-reference-audit.md",
             "docs/compatibility/ds2-request-send-message-to-players-security-audit.md",
             "backend/include/identity/sqlite_identity_store.hpp",
             "backend/src/identity/sqlite_identity_store.cpp",
@@ -168,6 +169,23 @@ class ProjectStructureTests(unittest.TestCase):
             "não declara override",
             "não prova, por si só, vazamento",
             "protocolo Xbox 360 continua não identificado",
+            "Nenhum XEX foi criado ou executado",
+        ):
+            with self.subTest(evidence=evidence):
+                self.assertIn(evidence, report)
+
+
+    def test_scholar_xbox360_recompiler_reference_is_scoped_and_honest(self):
+        report = (ROOT / "docs/compatibility/ds2-xbox360-scholar-recomp-reference-audit.md").read_text(encoding="utf-8")
+        for evidence in (
+            "`465307E4`",
+            "`0.0.0.22`",
+            "`XNET`",
+            "`XONLINE`",
+            "`NetDll_XNetGetTitleXnAddr`",
+            "`NetDll_XNetDnsLookup`",
+            "shims do ReXGlue",
+            "não demonstra compatibilidade",
             "Nenhum XEX foi criado ou executado",
         ):
             with self.subTest(evidence=evidence):
