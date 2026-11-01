@@ -184,7 +184,7 @@ class ProjectStructureTests(unittest.TestCase):
             "`XONLINE`",
             "`NetDll_XNetGetTitleXnAddr`",
             "`NetDll_XNetDnsLookup`",
-            "shims do ReXGlue",
+            "são stubs/shims do ambiente ReXGlue",
             "não demonstra compatibilidade",
             "Nenhum XEX foi criado ou executado",
         ):
