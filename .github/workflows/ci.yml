@@ -28,6 +28,13 @@ jobs:
       - name: Run repository checks
         run: python -m unittest discover -s tests -v
 
+      - name: Compile and run session registry tests
+        run: |
+          g++ -std=c++17 -Wall -Wextra -Werror -pedantic \
+            -Ibackend/include backend/tests/session_registry_test.cpp \
+            -o /tmp/session_registry_test
+          /tmp/session_registry_test
+
       - name: Compile and run identity tests
         run: |
           g++ -std=c++17 -Wall -Wextra -Werror -pedantic \
