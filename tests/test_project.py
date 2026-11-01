@@ -155,6 +155,24 @@ class ProjectStructureTests(unittest.TestCase):
             with self.subTest(evidence=evidence):
                 self.assertIn(evidence, report)
 
+
+    def test_ds2_disconnect_cleanup_coverage_audit_is_precise(self):
+        report = (ROOT / "docs/compatibility/ds2-disconnect-cleanup-coverage-audit.md").read_text(encoding="utf-8")
+        for evidence in (
+            "`GameService::Poll()`",
+            "`OnLostPlayer`",
+            "`DS2_BreakInManager::OnLostPlayer`",
+            "`ActiveSummonSigns`",
+            "`ActiveMirrorKnightSummonSigns`",
+            "`HostPlayerId`",
+            "não declara override",
+            "não prova, por si só, vazamento",
+            "protocolo Xbox 360 continua não identificado",
+            "Nenhum XEX foi criado ou executado",
+        ):
+            with self.subTest(evidence=evidence):
+                self.assertIn(evidence, report)
+
     def test_xbox_connection_failure_does_not_claim_unknown_protocol_details(self):
         report = (ROOT / "docs/protocol/xbox360-connection-failure-analysis.md").read_text(encoding="utf-8").lower()
         self.assertIn("protocolo xbox 360 não identificado", report)
