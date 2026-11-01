@@ -46,7 +46,7 @@ A lista acima corresponde aos managers registrados por `DS2_Game::RegisterGameMa
 
 ## Detalhes confirmados
 
-- `DS2_SignManager::OnLostPlayer` percorre `Client->ActiveSummonSigns`, remove cada sinal com `RemoveSignAndNotifyAware` e limpa o vetor.
+- `DS2_SignManager::OnLostPlayer` percorre o campo `ActiveSummonSigns` de `Client`, remove cada sinal com `RemoveSignAndNotifyAware` e limpa o vetor.
 - `DS2_MirrorKnightManager::OnLostPlayer` faz o equivalente para `ActiveMirrorKnightSummonSigns`.
 - Ambos notificam os jogadores que estavam marcados como cientes, usando pushes de remoção, e limpam `BeingSummonedByPlayerId` e `AwarePlayerIds` no objeto de sinal.
 - `DS2_QuickMatchManager::OnLostPlayer` remove da lista `Matches` as partidas cujo `HostPlayerId` é o PlayerId do cliente desconectado. A função não percorre partidas em que ele apareça apenas como participante.
