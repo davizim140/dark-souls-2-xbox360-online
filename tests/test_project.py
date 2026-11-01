@@ -111,8 +111,8 @@ class ProjectStructureTests(unittest.TestCase):
         for evidence in (
             "`max_type_1`",
             "`RequestUpdateQuickMatch`",
-            "`RequestRejectSign`",
-            "`RequestRejectMirrorKnightSign`",
+            "`Handle_RequestRejectSign`",
+            "`Handle_RequestRejectMirrorKnightSign`",
             "resposta protobuf vazia",
             "não provam",
             "Nenhum XEX foi criado ou executado",
