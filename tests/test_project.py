@@ -25,6 +25,9 @@ class ProjectStructureTests(unittest.TestCase):
             "backend/include/identity/identity_registry.hpp",
             "backend/tests/identity_registry_test.cpp",
             "docs/architecture/identity-registry.md",
+            "docs/architecture/session-registry.md",
+            "backend/include/matchmaking/session_registry.hpp",
+            "backend/tests/session_registry_test.cpp",
             "docs/compatibility/ds2-identity-migration-audit.md",
             "docs/compatibility/ds2-copy-migration-contract.md",
             "docs/compatibility/dsos-ds2-pc-client-redirection-audit.md",
@@ -47,6 +50,16 @@ class ProjectStructureTests(unittest.TestCase):
         ):
             with self.subTest(path=relative):
                 self.assertTrue((ROOT / relative).is_file(), relative)
+
+
+    def test_session_registry_scope_and_contract(self):
+        header = (ROOT / "backend/include/matchmaking/session_registry.hpp").read_text(encoding="utf-8")
+        docs = (ROOT / "docs/architecture/session-registry.md").read_text(encoding="utf-8")
+        self.assertIn("SessionRegistry", header)
+        self.assertIn("SessionFull", header)
+        self.assertIn("SessionNotFound", header)
+        self.assertIn("not a network server", docs)
+        self.assertIn("no Xbox Live/XONLINE integration", docs)
 
     def test_status_is_honest(self):
         readme = (ROOT / "README.md").read_text(encoding="utf-8")
