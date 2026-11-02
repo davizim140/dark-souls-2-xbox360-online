@@ -27,6 +27,9 @@ class ProjectStructureTests(unittest.TestCase):
             "docs/architecture/identity-registry.md",
             "docs/architecture/session-registry.md",
             "backend/include/matchmaking/session_registry.hpp",
+            "backend/include/presence/presence_registry.hpp",
+            "backend/tests/presence_registry_test.cpp",
+            "docs/architecture/presence-registry.md",
             "backend/tests/session_registry_test.cpp",
             "docs/compatibility/ds2-identity-migration-audit.md",
             "docs/compatibility/ds2-copy-migration-contract.md",
@@ -60,6 +63,15 @@ class ProjectStructureTests(unittest.TestCase):
         self.assertIn("SessionNotFound", header)
         self.assertIn("not yet a network server", docs)
         self.assertIn("Xbox Live/XONLINE integration", docs)
+
+    def test_presence_registry_contract_is_explicit(self):
+        header = (ROOT / "backend/include/presence/presence_registry.hpp").read_text(encoding="utf-8")
+        docs = (ROOT / "docs/architecture/presence-registry.md").read_text(encoding="utf-8")
+        self.assertIn("PresenceRegistry", header)
+        self.assertIn("MarkOnline", header)
+        self.assertIn("Expire", header)
+        self.assertIn("not a network service", docs)
+        self.assertIn("Xbox Live/XONLINE", docs)
 
     def test_status_is_honest(self):
         readme = (ROOT / "README.md").read_text(encoding="utf-8")
