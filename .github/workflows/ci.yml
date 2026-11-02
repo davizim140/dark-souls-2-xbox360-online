@@ -37,8 +37,8 @@ jobs:
 
       - name: Compile and run matchmaking coordinator tests
         run: |
-          g++ -std=c++17 -Wall -Wextra -Werror -pedantic \\
-            -pthread -Ibackend/include backend/tests/matchmaking_coordinator_test.cpp \\
+          g++ -std=c++17 -Wall -Wextra -Werror -pedantic \
+            -pthread -Ibackend/include backend/tests/matchmaking_coordinator_test.cpp \
             -o /tmp/matchmaking_coordinator_test
           /tmp/matchmaking_coordinator_test
 
