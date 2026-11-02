@@ -24,6 +24,11 @@ struct CreateSessionOutcome {
     std::optional<SessionId> session_id;
 };
 
+struct DisconnectOutcome {
+    bool presence_removed = false;
+    std::optional<CoordinatorResult> session_result;
+};
+
 // Coordinates in-memory presence and session primitives. Presence is checked
 // at operation time; this is not an atomic distributed transaction.
 class MatchmakingCoordinator {
@@ -62,6 +67,17 @@ public:
             case SessionResult::NotMember: return CoordinatorResult::NotMember;
         }
         return CoordinatorResult::SessionNotFound;
+    }
+
+    // Best-effort in-memory cleanup: remove presence, then detach the player
+    // from its session. This is sequential, not an atomic cross-registry action.
+    DisconnectOutcome Disconnect(PlayerId player) {
+        if (player == 0) return {};
+        DisconnectOutcome outcome;
+        outcome.presence_removed = presence_.MarkOffline(player);
+        const auto session = sessions_.FindPlayerSession(player);
+        if (session) outcome.session_result = Leave(*session, player);
+        return outcome;
     }
 
     CoordinatorResult Leave(SessionId session, PlayerId player) {
