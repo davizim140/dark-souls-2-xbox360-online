@@ -71,6 +71,7 @@ public:
             case SessionResult::SessionNotFound: return CoordinatorResult::SessionNotFound;
             case SessionResult::AlreadyInSession: return CoordinatorResult::AlreadyInSession;
             case SessionResult::SessionFull: return CoordinatorResult::SessionFull;
+            case SessionResult::InvalidCapacity: return CoordinatorResult::InvalidCapacity;
             case SessionResult::NotMember: return CoordinatorResult::NotMember;
         }
         return CoordinatorResult::SessionNotFound;
