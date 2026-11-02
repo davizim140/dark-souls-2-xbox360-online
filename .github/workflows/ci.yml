@@ -35,6 +35,13 @@ jobs:
             -o /tmp/session_registry_test
           /tmp/session_registry_test
 
+      - name: Compile and run presence registry tests
+        run: |
+          g++ -std=c++17 -Wall -Wextra -Werror -pedantic \\
+            -pthread -Ibackend/include backend/tests/presence_registry_test.cpp \\
+            -o /tmp/presence_registry_test
+          /tmp/presence_registry_test
+
       - name: Compile and run identity tests
         run: |
           g++ -std=c++17 -Wall -Wextra -Werror -pedantic \
