@@ -1,0 +1,31 @@
+name: Altare external network probe
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - "tools/network_probe.js"
+      - ".github/workflows/altare-network-probe.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  probe:
+    name: Probe Altare TCP and UDP
+    runs-on: ubuntu-latest
+    timeout-minutes: 2
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Test public endpoint
+        env:
+          DS2_HOST: us-lax02.altare.global
+          DS2_PORT: "25465"
+        run: node tools/network_probe.js
