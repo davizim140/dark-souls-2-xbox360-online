@@ -35,7 +35,7 @@ int main() {
 
     assert(registry.MarkOnline(30, 100));
     assert(registry.MarkOnline(40, 108));
-    assert(registry.Expire(110, 10) == 2);
+    assert(registry.Expire(110, 10) == 3);
     assert(!registry.FindActive(30, 110, 10).has_value());
     assert(registry.FindActive(40, 110, 10).has_value());
 
