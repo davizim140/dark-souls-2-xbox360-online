@@ -27,6 +27,9 @@ class ProjectStructureTests(unittest.TestCase):
             "docs/architecture/identity-registry.md",
             "docs/architecture/session-registry.md",
             "backend/include/matchmaking/session_registry.hpp",
+            "backend/include/matchmaking/matchmaking_coordinator.hpp",
+            "backend/tests/matchmaking_coordinator_test.cpp",
+            "docs/architecture/matchmaking-coordinator.md",
             "backend/include/presence/presence_registry.hpp",
             "backend/tests/presence_registry_test.cpp",
             "docs/architecture/presence-registry.md",
@@ -63,6 +66,15 @@ class ProjectStructureTests(unittest.TestCase):
         self.assertIn("SessionNotFound", header)
         self.assertIn("not yet a network server", docs)
         self.assertIn("Xbox Live/XONLINE integration", docs)
+
+    def test_matchmaking_coordinator_requires_fresh_presence(self):
+        header = (ROOT / "backend/include/matchmaking/matchmaking_coordinator.hpp").read_text(encoding="utf-8")
+        docs = (ROOT / "docs/architecture/matchmaking-coordinator.md").read_text(encoding="utf-8")
+        self.assertIn("MatchmakingCoordinator", header)
+        self.assertIn("PlayerOffline", header)
+        self.assertIn("FindActive", header)
+        self.assertIn("not DS2 matchmaking", docs)
+        self.assertIn("Xbox Live/XONLINE", docs)
 
     def test_presence_registry_contract_is_explicit(self):
         header = (ROOT / "backend/include/presence/presence_registry.hpp").read_text(encoding="utf-8")
